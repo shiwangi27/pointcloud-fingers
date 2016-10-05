@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset=utf-8>
+
+    <title>Assignment 3 -- three.js Robot</title>
+
+    <!-- CSS Libraries -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <!-- CSS Source -->
+    <link rel="stylesheet" href="./src/css/main.css" />
+
+    <!-- JS Libraries -->
+    <script   src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script src="lib/js/three.min.js"></script>
+    <script src="lib/js/TrackballControls.js"></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.2.6/d3.min.js"></script>
+
+    <!-- JS Source -->
+    <script src="./src/js/scene.js"></script>
+    <script src="./src/js/particleSystem.js"></script>
+    <script src="./src/js/main.js"></script>
+
+
+
+</head>
+
+<body onload="App.start();">
+
+    <script id="vertexShader" type="x-shader/x-vertex">
+        precision mediump float;
+        precision mediump int;
+        uniform mat4 modelViewMatrix; // optional
+        uniform mat4 projectionMatrix; // optional
+        
+        attribute vec3 position;
+        attribute vec4 color;
+        attribute float scale;
+        uniform float size;
+        varying vec3 vPosition;
+        varying vec4 vColor;
+
+        void main() {
+            vPosition = position; 
+            vColor = color; 
+
+            vec4 mvPosition = modelViewMatrix* vec4(position, 1.0);
+
+            gl_Position = projectionMatrix * mvPosition;
+            gl_PointSize = size ;
+        }
+    </script>
+
+    <script id="fragmentShader" type="x-shader/x-fragment">
+        precision mediump float;
+        precision mediump int;
+        varying vec3 vPosition;
+        varying vec4 vColor;
+        void main() {
+            vec4 color = vec4( vColor );
+            // color.r += sin( vPosition.x * 10.0 + time ) * 0.5;
+            gl_FragColor = color;
+        }
+    </script>
+
+    <div class="container-fluid">
+        <div class="row">
+             <div class="row">&nbsp;</div>
+        </div>
+
+        <div class="row">
+            <div class="particleDiv col-md-5"> 
+                <div id="scene"></div>
+            </div>
+            <div class="col-md-1">&nbsp;</div>
+            <div class="sliceDiv col-md-5"> 
+                <div id="slice"></div> 
+            </div>
+            <div class="col-md-1">&nbsp;</div>
+        </div>
+
+        <div class="row">
+             <div class="slider col-md-2"> 
+                <input type="range" id="z-slider" min="0" max="10" step="1" value="8">
+            </div>
+            
+            <!-- <div class="slider col-md-2"> 
+                <input type="button" id="brush" value="By concentration" >
+            </div>
+             --> 
+
+        </div>
+
+    </div>
+
+</body>
+</html>
